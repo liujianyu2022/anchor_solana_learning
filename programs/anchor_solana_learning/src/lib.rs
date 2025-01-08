@@ -1,7 +1,19 @@
 use anchor_lang::prelude::*;
 
+// declare_id 中的地址是由 anchor 在 init 项目的时候生成的，这个将作为部署到链上的地址
 declare_id!("DJtPN7Rjgt3gdwhtmKwAQzPWzeTamT8rPZoKJQ1nPrBK");
 
+/*
+    pub struct Context<'a, 'b, 'c, 'info, T: Bumps> {
+        pub program_id: &'a Pubkey,                         // 当前正在执行的程序ID
+        pub accounts: &'b mut T,                            // 反序列化的账户
+        pub remaining_accounts: &'c [AccountInfo<'info>],   // 剩下的账户信息，但是为被反序列化或验证
+        pub bumps: T::Bumps,                                // 在约束验证期间找到的Bump种子
+    }
+*/
+
+
+// #[program] 定义了包含所有指令的模块
 #[program]
 pub mod anchor_solana_learning {
     use super::*;
@@ -25,6 +37,8 @@ pub mod anchor_solana_learning {
     }
 }
 
+
+// 解析和验证账户
 #[derive(Accounts)]
 pub struct Initialize<'info> {
     
@@ -55,6 +69,7 @@ pub struct UpdateAccount<'info> {
 
 
 // Anchor 利用 Rust 宏提供了简洁的方式来定义账户结构，它用于处理账户的**（反）序列化**、账户识别器、所有权验证。
+// 给结构体实现了如下的trait：AccountSerialize, AccountDesrialize, AnchorSerialize, AnchorDeSerialize, Clone, Discriminator, Owner指定次账户数据归此program所有
 // 这个宏大大简化了程序的开发过程，使开发者可以更专注于业务逻辑而不是底层的账户处理
 #[account]
 pub struct Counter {
