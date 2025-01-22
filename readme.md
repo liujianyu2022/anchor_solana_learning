@@ -52,6 +52,7 @@ liujianyu@Ubuntu:~/vscode$ anchor --version
 ```
 
 ### ANCHOR CLI
+Anchor 版本管理工具(Anchor Version Manager) avm，如果你熟悉 Nodejs，他就像管理 nodejs 版本的 nvm
 
 ```shell
 1. cargo install --git https://github.com/coral-xyz/anchor avm --force
@@ -98,36 +99,43 @@ liujianyu@Ubuntu:~$ solana address
 
 liujianyu@Ubuntu:~$ solana-keygen new -o /home/liujianyu/.config/solana/id.json
   Wrote new keypair to /home/liujianyu/.config/solana/id.json
-  =====================================================================================
-  pubkey: 4QLv4fVzf95cGcm8LEjTmHpsqeU7KunZpbCFgYEaC5Lw
-  =====================================================================================
+  ==============================================================================
+  pubkey: 96NjZXgj5xx72miy6Vqaqo6KtLfnvwEiEXoaN83f8NAm
+  ==============================================================================
   Save this seed phrase and your BIP39 passphrase to recover your new keypair:
-  major devote jungle video ignore analyst surprise umbrella action prosper jump liquid
-  =====================================================================================
+  east ribbon fame guide begin kidney relax shoulder nothing step program peanut
+  ==============================================================================
 ```
 
 ### 测试钱包
 
 ```shell
 liujianyu@Ubuntu:~$ solana address
-  4QLv4fVzf95cGcm8LEjTmHpsqeU7KunZpbCFgYEaC5Lw
+  96NjZXgj5xx72miy6Vqaqo6KtLfnvwEiEXoaN83f8NAm
 
 liujianyu@Ubuntu:~$ solana balance
   0 SOL
 ```
 
-### 领取水龙头
+## TEST ACCOUNT
+grocery catalog wreck million staff victory trust antique live fine yard twelve
 
-https://faucet.solana.com
+
+### 领取水龙头
+```
+https://faucet.solana.com             # for sol
+https://spl-token-faucet.com/         # for spl token
+```
 
 ```shell
 liujianyu@Ubuntu:~$ solana balance
   5 SOL
 ```
 
-
 ## 区块链浏览器
 https://explorer.solana.com/
+https://solscan.io/
+
 
 
 ## ANCHOR
@@ -135,10 +143,42 @@ https://explorer.solana.com/
 完整的anchor.toml配置文件中可配置内容见网址：https://www.anchor-lang.com/docs/manifest
 
 ```shell
-1. anchor init my-project     # 新建一个项目模板
-2. anchor build               # 编译项目
-3. anchor deploy              # 部署项目
+1. anchor init my-project               # 新建一个项目模板, 包含了 demo 代码
+2. anchor build                         # 编译项目
+3. anchor test                          # 执行程序的测试套件
+4. anchor deploy                        # 部署项目
+4.1 anchor deploy --env devnet          # 部署到开发测试网
+4.2 anchor deploy --env mainnet-beta    # 部署到主网
 ```
+
+### 项目结构
+```
+my_project/
+├── Anchor.toml
+├── programs/
+│   └── my_program/
+│       ├── Cargo.toml
+│       ├── src/
+│       │   └── lib.rs
+│       └── tests/
+│           └── program_test.rs
+├── target/
+└── tests/
+    └── integration_test.rs
+```
+这是一个简化的结构，提供了一个基本的框架，使你能够开始编写、测试和部署程序
+● Anchor.toml： 项目的配置文件，包含项目的基本信息、依赖关系和其他配置项。
+● programs目录： 包含你的程序的目录。在这个例子中，有一个名为my_program的子目录。
+● Cargo.toml： 程序的Rust项目配置文件。
+● src目录： 包含实际的程序代码文件，通常是lib.rs，在实际的项目中我们会根据模块划分，拆的更细。
+● tests目录： 包含用于测试程序的测试代码文件。
+● target目录： 包含构建和编译生成的文件。
+● tests目录： 包含整合测试代码文件，用于测试整个项目的集成性能。
+
+
+
+
+
 
 修改 Anchor.toml 配置文件
 1. cluster = "Localnet"  --->

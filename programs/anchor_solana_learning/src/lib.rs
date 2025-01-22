@@ -1,77 +1,56 @@
-use anchor_lang::prelude::*;
+use anchor_lang::{
+    prelude::*, 
+    solana_program
+};
 
-// declare_id 中的地址是由 anchor 在 init 项目的时候生成的，这个将作为部署到链上的地址
+use solana_program::clock::Clock;           // 获取到当前时间的时间戳
+
 declare_id!("DJtPN7Rjgt3gdwhtmKwAQzPWzeTamT8rPZoKJQ1nPrBK");
 
-/*
-    pub struct Context<'a, 'b, 'c, 'info, T: Bumps> {
-        pub program_id: &'a Pubkey,                         // 当前正在执行的程序ID
-        pub accounts: &'b mut T,                            // 反序列化的账户
-        pub remaining_accounts: &'c [AccountInfo<'info>],   // 剩下的账户信息，但是为被反序列化或验证
-        pub bumps: T::Bumps,                                // 在约束验证期间找到的Bump种子
-    }
-*/
-
-
-// #[program] 定义了包含所有指令的模块
 #[program]
-pub mod anchor_solana_learning {
+pub mod guess_number {
     use super::*;
-
-    pub fn initialize(ctx: Context<Initialize>, instruction_data: u64) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
-        ctx.accounts.counter.count = instruction_data;
-        Ok(())
-    }
-
-    pub fn increment(ctx: Context<UpdateAccount>) -> Result<()> {
-        let counter = &mut ctx.accounts.counter;
-
-        msg!("previous count is: {}", counter.count);
-
-        counter.count = counter.count.checked_add(1).unwrap();
-
-        msg!("now count is: {}", counter.count);
-
-        Ok(())
-    }
 }
 
+fn generate_random_number() -> u32 {
+    let clock = Clock::get().expect("get clock failed");
+    let last_digit = (clock.unix_timestamp % 10) as u8;
+    let random_number = (last_digit + 1) as u32;                        // 范围在 1～10 之间
+    return random_number;
+}
 
-// 解析和验证账户
+// 定义程序账户结构体，它用于管理程序交互过程中的账户状态
+// #[derive(Accounts)] 这个派生宏，在获取账户时不再需要手动迭代账户以及反序列化操作，并且实现了账户满足程序安全运行所需要的安全检查。
 #[derive(Accounts)]
-pub struct Initialize<'info> {
-    
+pub struct AccountContext<'info> {
+    // 使用 #[account] 宏，用来配置了 PDA 账户的各种属性，如初始化方式、占用的空间大小和付款账户等
     #[account(
-        init, 
-        seeds = [b"my_seed"], 
-        bump,
-        payer = user, 
-        space = 8 + 8
+
+        // 通知 Anchor 在需要时自动初始化一个派生账户地址 PDA。如果账户尚未初始化，Anchor 会根据提供的其他参数（如 space 和 payer ）来初始化它
+        init_if_needed,   
+
+        // 前 8 个字节为账户类型识别器，用于识别帐户类型，这样 Anchor 就能对账户进行（反）系列化
+        // 接下来的 4 个字节为存储在 GuessingAccount 帐户类型中的数据分配空间（ number 为 u32 类型，占用 4 字节）
+        space=8+4,
+        payer=payer,
+        seeds = [b"guessing pda"],
+        bump
     )]
-    pub counter: Account<'info, Counter>,               // 数据账户
+    
+    pub guessing_account: Account<'info, GuessingAccount>,      // 'info：是一个生命周期参数，让这个账户引用在整个结构体生命周期内都是有效的
 
-    #[account(mut)]
-    pub user: Signer<'info>,                            // 调用者
+    #[account(mut)]                                 // 表示 payer 是一个可变的账户引用，这是因为执行合约时可能会修改账户状态（例如，扣除手续费）
+    pub payer: Signer<'info>,                       // payer 是 Signer 类型，表示对该笔交易进行签名的账户
 
-    pub system_program: Program<'info, System>          // 程序账户
-}
-
-#[derive(Accounts)]
-pub struct UpdateAccount<'info> {
-
-    #[account(mut)]
-    pub counter: Account<'info, Counter>,
-
-    pub user: Signer<'info>,                            // 调用者
+    pub system_program: Program<'info, System>,     // 表示 Solana 系统程序的引用，它提供了执行合约所需的一些基础功能
 }
 
 
-
-// Anchor 利用 Rust 宏提供了简洁的方式来定义账户结构，它用于处理账户的**（反）序列化**、账户识别器、所有权验证。
-// 给结构体实现了如下的trait：AccountSerialize, AccountDesrialize, AnchorSerialize, AnchorDeSerialize, Clone, Discriminator, Owner指定次账户数据归此program所有
-// 这个宏大大简化了程序的开发过程，使开发者可以更专注于业务逻辑而不是底层的账户处理
+// Solana 作为一个分布式区块链系统，所有的信息都存储在账户中，如程序代码、状态信息、Token数据、配置信息等都是存储在一个个账户中
+// 定义记录数据的结构体，也需要用 #[account] 标记为 Solana 的账户类型，这样就可以在链上存储游戏要记录的数字
+// #[account] 将结构体定义为账户类型，使得结构体能够映射到区块链上的一个账户，存储所需的状态信息，并通过合约中的函数进行访问和修改，
+// 同时自动处理数据的序列化、反序列化和验证
 #[account]
-pub struct Counter {
-    count: u64,
+pub struct GuessingAccount {
+    pub random_number: u32
 }
