@@ -182,3 +182,23 @@ my_project/
 
 修改 Anchor.toml 配置文件
 1. cluster = "Localnet"  --->
+
+
+### TEST FRAMEWORK
+yarn add anchor-bankrun
+
+
+### PROGRAM ID
+可以通过 anchor keys list 获取每个程序的 ID，并替换到 Anchor.toml 文件中
+```
+anchor keys list
+  count_increment: 3QwVsMDRrF9hmQrgjFVDumXs5AHUtyy9VvQbwaJ9PF1t
+  guess_random_number: 53huonbTydKqUQ6RSFgXXZGnc4HjFYAJHgWrabJpVLFj
+  voting: FhnUQ3mgYLTuLV7RZQaX4WMgnvigUoL4rKF8nH8PfqVc
+```
+
+如果尚未为每个程序生成 Program ID，可以通过以下命令生成:
+生成的密钥对会保存在对应的子目录下，例如 programs/count_increment/count_increment-keypair.json。然后在 Anchor.toml 中添加对应的 Program ID
+```
+anchor keys generate
+```

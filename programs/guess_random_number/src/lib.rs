@@ -5,7 +5,7 @@ use anchor_lang::{
 
 use solana_program::clock::Clock;           // 获取到当前时间的时间戳
 
-declare_id!("DJtPN7Rjgt3gdwhtmKwAQzPWzeTamT8rPZoKJQ1nPrBK");
+declare_id!("53huonbTydKqUQ6RSFgXXZGnc4HjFYAJHgWrabJpVLFj");
 
 #[program]
 pub mod guess_number {
@@ -19,6 +19,7 @@ fn generate_random_number() -> u32 {
     return random_number;
 }
 
+
 // 定义程序账户结构体，它用于管理程序交互过程中的账户状态
 // #[derive(Accounts)] 这个派生宏，在获取账户时不再需要手动迭代账户以及反序列化操作，并且实现了账户满足程序安全运行所需要的安全检查。
 #[derive(Accounts)]
@@ -27,6 +28,7 @@ pub struct AccountContext<'info> {
     #[account(
 
         // 通知 Anchor 在需要时自动初始化一个派生账户地址 PDA。如果账户尚未初始化，Anchor 会根据提供的其他参数（如 space 和 payer ）来初始化它
+        // you need to update the following configuration anchor-lang = { version = "0.30.1", features = ["init-if-needed"] } at the Cargo.toml
         init_if_needed,   
 
         // 前 8 个字节为账户类型识别器，用于识别帐户类型，这样 Anchor 就能对账户进行（反）系列化

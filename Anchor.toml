@@ -5,13 +5,19 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-anchor_solana_learning = "8WPb8qwCTJzzSV5coCRditBzYrJCysDQSTJV25sbuJyo"
+count_increment = "3QwVsMDRrF9hmQrgjFVDumXs5AHUtyy9VvQbwaJ9PF1t"
+guess_random_number = "53huonbTydKqUQ6RSFgXXZGnc4HjFYAJHgWrabJpVLFj"
+voting = "FhnUQ3mgYLTuLV7RZQaX4WMgnvigUoL4rKF8nH8PfqVc"
 
 [programs.devnet]
-anchor_solana_learning = "8WPb8qwCTJzzSV5coCRditBzYrJCysDQSTJV25sbuJyo"
+count_increment = "3QwVsMDRrF9hmQrgjFVDumXs5AHUtyy9VvQbwaJ9PF1t"
+guess_random_number = "53huonbTydKqUQ6RSFgXXZGnc4HjFYAJHgWrabJpVLFj"
+voting = "FhnUQ3mgYLTuLV7RZQaX4WMgnvigUoL4rKF8nH8PfqVc"
 
 [programs.mainnet]
-anchor_solana_learning = "8WPb8qwCTJzzSV5coCRditBzYrJCysDQSTJV25sbuJyo"
+count_increment = "3QwVsMDRrF9hmQrgjFVDumXs5AHUtyy9VvQbwaJ9PF1t"
+guess_random_number = "53huonbTydKqUQ6RSFgXXZGnc4HjFYAJHgWrabJpVLFj"
+voting = "FhnUQ3mgYLTuLV7RZQaX4WMgnvigUoL4rKF8nH8PfqVc"
 
 [registry]
 url = "https://api.apr.dev"                             # Anchor程序注册表的URL地址，本质上是一个程序包管理服务器
