@@ -70,7 +70,7 @@ Anchor 版本管理工具(Anchor Version Manager) avm，如果你熟悉 Nodejs�
 ## config
 
 ```shell
-liujianyu@Ubuntu:~$ solana config get
+solana config get
   Config File: /home/liujianyu/.config/solana/cli/config.yml
   RPC URL: https://api.mainnet-beta.solana.com                           # 主网URL
   WebSocket URL: wss://api.mainnet-beta.solana.com/ (computed)
@@ -81,12 +81,32 @@ liujianyu@Ubuntu:~$ solana config get
 设置测试网的URL
 
 ```shell
-liujianyu@Ubuntu:~$ solana config set --url https://api.devnet.solana.com
+solana config set --url https://api.devnet.solana.com
   Config File: /home/liujianyu/.config/solana/cli/config.yml
   RPC URL: https://api.devnet.solana.com                                        # 测试网URL
   WebSocket URL: wss://api.devnet.solana.com/ (computed)
   Keypair Path: /home/liujianyu/.config/solana/id.json 
   Commitment: confirmed 
+```
+
+设置第三方的RPC节点（由于网络问题，直接设置为devnet的话，将无法访问
+```shell
+solana config set --url https://young-restless-bridge.solana-devnet.quiknode.pro/64df14141046ed00f4320d627db7e1119aef0b52
+  Config File: /home/liujianyu/.config/solana/cli/config.yml
+  RPC URL: https://young-restless-bridge.solana-devnet.quiknode.pro/64df14141046ed00f4320d627db7e1119aef0b52 
+  WebSocket URL: wss://young-restless-bridge.solana-devnet.quiknode.pro/64df14141046ed00f4320d627db7e1119aef0b52 (computed)
+  Keypair Path: /home/liujianyu/.config/solana/id.json 
+  Commitment: confirmed 
+```
+
+然后在 Anchor.toml 的配置文件中，修改 cluster 信息
+Anchor.toml    provider
+将 cluster 的值从 "Devnet" 改为你自定义的 RPC URL, 这样，Anchor 会使用你指定的 RPC 节点，而不是默认的 api.devnet.solana.com
+```
+[provider]
+# cluster = "Devnet"                                    # 使用的网络环境(Localnet/Devnet/Mainnet)
+cluster = "https://young-restless-bridge.solana-devnet.quiknode.pro/64df14141046ed00f4320d627db7e1119aef0b52"
+wallet = "~/.config/solana/id.json"                     # 钱包密钥对文件路径
 ```
 
 ## basic command
@@ -145,10 +165,35 @@ https://solscan.io/
 ```shell
 1. anchor init my-project               # 新建一个项目模板, 包含了 demo 代码
 2. anchor build                         # 编译项目
-3. anchor test                          # 执行程序的测试套件
-4. anchor deploy                        # 部署项目
-4.1 anchor deploy --env devnet          # 部署到开发测试网
-4.2 anchor deploy --env mainnet-beta    # 部署到主网
+3. anchor clean                         # 清除target目录下已编译的内容
+4. anchor test                          # 执行程序的测试套件
+
+5. anchor deploy                        # 部署项目
+5.1 anchor deploy --env devnet          # 部署到开发测试网
+5.2 anchor deploy --env mainnet-beta    # 部署到主网
+5.3 anchor deploy -p voting             # -p 只部署指定的合约文件, 比如这里在部署 voting 合约
+5.4 anchor deploy -p voting --provider.cluster https://young-restless-bridge.solana-devnet.quiknode.pro/64df14141046ed00f4320d627db7e1119aef0b52  # 强制指定 RPC
+```
+
+**anchor test, 在 Anchor 中，默认情况下运行 anchor test 会部署工作区中的所有程序（合约），然后运行测试文件**
+如果你只想运行指定的测试文件（例如 tests/voting.ts），而不部署其他合约，可以通过以下方法实现：
+
+方法 1：使用 --skip-deploy 选项
+anchor test 命令支持 --skip-deploy 选项，可以跳过部署步骤，直接运行测试文件。你需要确保合约已经部署到目标网络（例如 Devnet 或 Localnet），然后运行以下命令
+```
+anchor test tests/voting.ts --skip-deploy
+```
+
+方法 2：修改 Anchor.toml 临时禁用其他程序
+如果你不想部署其他程序，可以临时修改 Anchor.toml，将不需要的程序注释掉或删除。例如
+```
+[programs.localnet]
+# count_increment = "3QwVsMDRrF9hmQrgjFVDumXs5AHUtyy9VvQbwaJ9PF1t"
+# guess_random_number = "53huonbTydKqUQ6RSFgXXZGnc4HjFYAJHgWrabJpVLFj"
+voting = "FhnUQ3mgYLTuLV7RZQaX4WMgnvigUoL4rKF8nH8PfqVc"
+
+# 运行测试:
+anchor test tests/voting.ts       # 测试完成后，记得恢复 Anchor.toml 的原始配置。
 ```
 
 ### 项目结构
@@ -198,7 +243,7 @@ anchor keys list
 ```
 
 如果尚未为每个程序生成 Program ID，可以通过以下命令生成:
-生成的密钥对会保存在对应的子目录下，例如 programs/count_increment/count_increment-keypair.json。然后在 Anchor.toml 中添加对应的 Program ID
+生成的密钥对会保存在对应的子目录下，例如 target/deploy/count_increment-keypair.json。然后在 Anchor.toml 中添加对应的 Program ID
 ```
 anchor keys generate
 ```

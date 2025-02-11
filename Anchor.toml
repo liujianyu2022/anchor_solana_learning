@@ -23,8 +23,10 @@ voting = "FhnUQ3mgYLTuLV7RZQaX4WMgnvigUoL4rKF8nH8PfqVc"
 url = "https://api.apr.dev"                             # Anchor程序注册表的URL地址，本质上是一个程序包管理服务器
 
 [provider]
-cluster = "Devnet"                                      # 使用的网络环境(Localnet/Devnet/Mainnet)
-wallet = "~/.config/solana/id.json"                     # 钱包密钥对文件路径
+# cluster = "Devnet"                                    # 使用的网络环境(Localnet/Devnet/Mainnet)
+
+cluster = "https://young-restless-bridge.solana-devnet.quiknode.pro/64df14141046ed00f4320d627db7e1119aef0b52"       # 指定 RPC
+wallet = "~/.config/solana/id.json"                                                                                 # 钱包密钥对文件路径
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
