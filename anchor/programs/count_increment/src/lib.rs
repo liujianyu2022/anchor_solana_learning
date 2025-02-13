@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 
 // declare_id 中的地址是由 anchor 在 init 项目的时候生成的，这个将作为部署到链上的地址
-declare_id!("3QwVsMDRrF9hmQrgjFVDumXs5AHUtyy9VvQbwaJ9PF1t");
+declare_id!("H5FMw8u5VcRq28jEujYZ4tQJgUxy94kUVBLvrAYHkecc");
 
 /*
     Context是 Anchor 框架中定义的一个结构体，用于封装与 Solana 程序执行相关的上下文信息，

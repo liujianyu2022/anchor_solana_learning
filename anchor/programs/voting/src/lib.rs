@@ -3,7 +3,7 @@ use anchor_lang::{
     solana_program
 };
 
-declare_id!("FhnUQ3mgYLTuLV7RZQaX4WMgnvigUoL4rKF8nH8PfqVc");
+declare_id!("6ghmiYfqXdugFBdkMruXdhH6qD4rFoL1z7KeuxWeVEYo");
 
 
 #[program]

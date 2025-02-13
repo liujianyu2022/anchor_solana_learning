@@ -87,6 +87,14 @@ solana config set --url https://api.devnet.solana.com
   WebSocket URL: wss://api.devnet.solana.com/ (computed)
   Keypair Path: /home/liujianyu/.config/solana/id.json 
   Commitment: confirmed 
+
+```
+
+设置 Solana CLI 使用本地节点
+
+```
+solana config set --url http://127.0.0.1:8899
+solana-test-validator
 ```
 
 设置第三方的RPC节点（由于网络问题，直接设置为devnet的话，将无法访问
@@ -175,26 +183,31 @@ https://solscan.io/
 5.4 anchor deploy -p voting --provider.cluster https://young-restless-bridge.solana-devnet.quiknode.pro/64df14141046ed00f4320d627db7e1119aef0b52  # 强制指定 RPC
 ```
 
-**anchor test, 在 Anchor 中，默认情况下运行 anchor test 会部署工作区中的所有程序（合约），然后运行测试文件**
+### ANCHOR TEST
+anchor test, 在 Anchor 中，默认情况下运行 anchor test 会部署工作区中的所有程序（合约），然后运行测试文件
 如果你只想运行指定的测试文件（例如 tests/voting.ts），而不部署其他合约，可以通过以下方法实现：
 
-方法 1：使用 --skip-deploy 选项
+使用 --skip-deploy 选项
 anchor test 命令支持 --skip-deploy 选项，可以跳过部署步骤，直接运行测试文件。你需要确保合约已经部署到目标网络（例如 Devnet 或 Localnet），然后运行以下命令
+
+--skip-deploy：跳过合约的重新部署，但仍会检查编译。
+--skip-local-validator：不启动新的 solana-test-validator，直接连接到现有的本地测试链
+
 ```
 anchor test tests/voting.ts --skip-deploy
+anchor test tests/voting.ts --skip-deploy --skip-local-validator    # if using the local net
+
+anchor test --skip-deploy
+anchor test --skip-deploy --skip-local-validator    # if using the local net
 ```
 
-方法 2：修改 Anchor.toml 临时禁用其他程序
-如果你不想部署其他程序，可以临时修改 Anchor.toml，将不需要的程序注释掉或删除。例如
-```
-[programs.localnet]
-# count_increment = "3QwVsMDRrF9hmQrgjFVDumXs5AHUtyy9VvQbwaJ9PF1t"
-# guess_random_number = "53huonbTydKqUQ6RSFgXXZGnc4HjFYAJHgWrabJpVLFj"
-voting = "FhnUQ3mgYLTuLV7RZQaX4WMgnvigUoL4rKF8nH8PfqVc"
+pay attention: the above command will trigger all the .ts scripts in the tests folder, because there is a configuration in the Anchor.toml
 
-# 运行测试:
-anchor test tests/voting.ts       # 测试完成后，记得恢复 Anchor.toml 的原始配置。
 ```
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+```
+
 
 ### 项目结构
 ```
@@ -237,9 +250,10 @@ yarn add anchor-bankrun
 可以通过 anchor keys list 获取每个程序的 ID，并替换到 Anchor.toml 文件中
 ```
 anchor keys list
-  count_increment: 3QwVsMDRrF9hmQrgjFVDumXs5AHUtyy9VvQbwaJ9PF1t
-  guess_random_number: 53huonbTydKqUQ6RSFgXXZGnc4HjFYAJHgWrabJpVLFj
-  voting: FhnUQ3mgYLTuLV7RZQaX4WMgnvigUoL4rKF8nH8PfqVc
+  count_increment: H5FMw8u5VcRq28jEujYZ4tQJgUxy94kUVBLvrAYHkecc
+  spl_token: 7VE1KT8XXssnwBcYA3eZbmi4ZCkVPWzQZam63ZDQfQQn
+  guess_random_number: 9MHvXBo6NCYGj1t6LvswH9PBqapAPj9jviyUJkQATt6d
+  voting: 6ghmiYfqXdugFBdkMruXdhH6qD4rFoL1z7KeuxWeVEYo
 ```
 
 如果尚未为每个程序生成 Program ID，可以通过以下命令生成:

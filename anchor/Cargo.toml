@@ -1,6 +1,10 @@
 [workspace]
 members = [
-    "programs/*"
+    # "programs/*"
+    "programs/voting",
+    "programs/spl_token",
+    "programs/count_increment",
+    "programs/guess_random_number",
 ]
 resolver = "2"
 

@@ -5,7 +5,7 @@ use anchor_lang::{
 
 use solana_program::clock::Clock;           // 获取到当前时间的时间戳
 
-declare_id!("53huonbTydKqUQ6RSFgXXZGnc4HjFYAJHgWrabJpVLFj");
+declare_id!("9MHvXBo6NCYGj1t6LvswH9PBqapAPj9jviyUJkQATt6d");
 
 #[program]
 pub mod guess_number {

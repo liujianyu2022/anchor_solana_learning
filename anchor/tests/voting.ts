@@ -10,7 +10,7 @@ import { expect } from "chai"
 
 // const IDL = require("../target/idl/voting.json")
 
-const votingAddress = new PublicKey("FhnUQ3mgYLTuLV7RZQaX4WMgnvigUoL4rKF8nH8PfqVc")
+const votingAddress = new PublicKey("6ghmiYfqXdugFBdkMruXdhH6qD4rFoL1z7KeuxWeVEYo")
 
 describe("voting", () => {
     let context;
