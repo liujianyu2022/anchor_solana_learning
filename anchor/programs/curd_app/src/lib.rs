@@ -35,7 +35,7 @@ pub mod curd_app {
     }
 }
 
-#[account]
+#[account]                  // 用于定义账户的结构和属性
 #[derive(InitSpace)]
 pub struct EntryState {
     pub owner: Pubkey,
@@ -47,7 +47,7 @@ pub struct EntryState {
     pub message: String
 }
 
-#[derive(Accounts)]
+#[derive(Accounts)]         // 用于派生一个结构体，该结构体包含与 Solana 程序交互所需的所有账户
 #[instruction(title: String, message: String)]
 pub struct CreateEntry<'info> {
     #[account(
