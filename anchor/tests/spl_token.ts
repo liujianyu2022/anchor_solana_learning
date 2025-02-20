@@ -106,6 +106,7 @@ describe("spl_token_program", () => {
   //   const tx = await program.methods.approve(0) // MintTokens 权限
   //     .accounts({
   //       account: tokenAccount1,
+  //       // account: mint,
   //       owner: user1.publicKey,
   //       delegate: user2.publicKey,
   //     })

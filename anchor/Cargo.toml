@@ -5,6 +5,7 @@ members = [
     "programs/spl_token",
     "programs/count_increment",
     "programs/guess_random_number",
+    "programs/curd_app"
 ]
 resolver = "2"
 

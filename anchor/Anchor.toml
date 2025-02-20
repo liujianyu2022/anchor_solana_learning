@@ -6,18 +6,22 @@ skip-lint = false
 
 [programs.localnet]
 count_increment = "H5FMw8u5VcRq28jEujYZ4tQJgUxy94kUVBLvrAYHkecc"
+curd_app = "6vnHJQpQL1G8x9DUTjAfsegeqwf2uPd56eNisEvnuoRn"
 guess_random_number = "9MHvXBo6NCYGj1t6LvswH9PBqapAPj9jviyUJkQATt6d"
 voting = "6ghmiYfqXdugFBdkMruXdhH6qD4rFoL1z7KeuxWeVEYo"
 spl_token = "7VE1KT8XXssnwBcYA3eZbmi4ZCkVPWzQZam63ZDQfQQn"
 
+
 [programs.devnet]
 count_increment = "H5FMw8u5VcRq28jEujYZ4tQJgUxy94kUVBLvrAYHkecc"
+curd_app = "6vnHJQpQL1G8x9DUTjAfsegeqwf2uPd56eNisEvnuoRn"
 guess_random_number = "9MHvXBo6NCYGj1t6LvswH9PBqapAPj9jviyUJkQATt6d"
 voting = "6ghmiYfqXdugFBdkMruXdhH6qD4rFoL1z7KeuxWeVEYo"
 spl_token = "7VE1KT8XXssnwBcYA3eZbmi4ZCkVPWzQZam63ZDQfQQn"
 
 [programs.mainnet]
 count_increment = "H5FMw8u5VcRq28jEujYZ4tQJgUxy94kUVBLvrAYHkecc"
+curd_app = "6vnHJQpQL1G8x9DUTjAfsegeqwf2uPd56eNisEvnuoRn"
 guess_random_number = "9MHvXBo6NCYGj1t6LvswH9PBqapAPj9jviyUJkQATt6d"
 voting = "6ghmiYfqXdugFBdkMruXdhH6qD4rFoL1z7KeuxWeVEYo"
 spl_token = "7VE1KT8XXssnwBcYA3eZbmi4ZCkVPWzQZam63ZDQfQQn"
